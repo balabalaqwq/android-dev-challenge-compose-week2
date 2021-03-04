@@ -15,7 +15,6 @@
  */
 package com.example.androiddevchallenge
 
-import TimerView
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -66,31 +65,34 @@ class MainActivity : AppCompatActivity() {
 @Preview
 @Composable
 fun MyApp() {
-    var status = remember({ mutableStateOf("start")})
+    var status = remember({ mutableStateOf("start") })
     var timer: Job? = null
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Countdown Timer") },
+                    title = { Text("60s Countdown Timer") },
                     navigationIcon = {
                         Icon(
                             painter = painterResource(R.drawable.dian),
                             contentDescription = "Timer"
                         )
                     }
-            )},
+                )
+            },
             floatingActionButton = {
-                Button(onClick = {
-                    if (status.value == "start") {
-                        status.value = "stop"
-                        timer = countdownTimer()
-                    }else {
-                        status.value = "start"
-                        timer?.cancel()
-                        timeLeftInSeconds.value = 0
+                Button(
+                    onClick = {
+                        if (status.value == "start") {
+                            status.value = "stop"
+                            timer = countdownTimer()
+                        } else {
+                            status.value = "start"
+                            timer?.cancel()
+                            timeLeftInSeconds.value = 0
+                        }
                     }
-                }) {
+                ) {
                     Text(
                         text = status.value,
                         style = TextStyle(fontSize = 16.sp)
@@ -99,13 +101,13 @@ fun MyApp() {
             },
             floatingActionButtonPosition = FabPosition.End
         ) {
-           Surface(color = MaterialTheme.colors.background) {
-               Column(modifier = Modifier.fillMaxSize()){
-                   TimerView(timeLeftInSeconds = timeLeftInSeconds)
-                   Spacer(modifier = Modifier.size(100.dp))
-                   Text(text = "hi")
-               }
-           }
+            Surface(color = MaterialTheme.colors.background) {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    TimerView(timeLeftInSeconds = timeLeftInSeconds)
+                    Spacer(modifier = Modifier.size(100.dp))
+                    Text(text = "hi")
+                }
+            }
         }
     }
 }

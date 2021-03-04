@@ -1,8 +1,24 @@
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.example.androiddevchallenge
+
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,7 +41,7 @@ fun TimerView(timeLeftInSeconds: MutableStateFlow<Long>) {
     val timeLeft = timeLeftInSecondsState.value / totalSeconds
     Box(modifier = Modifier.padding(bottom = 350.dp), contentAlignment = Alignment.Center) {
         ProgressDial(timeLeft)
-        TimerCountdown(timeLeftInSecondsState.value.toLong())
+        TimerCountdown(timeLeftInSecondsState.value)
     }
 }
 
@@ -54,7 +70,7 @@ fun ProgressDial(timeLeft: Float) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = Color.Transparent),
-            color = // if (timeDisplay > .25) Color.Green else Color.Red //if(a < b) c else d
+            color =
             when {
                 timeLeft < .10 -> Color.Red
                 timeLeft < .30 -> Color.Yellow
@@ -67,19 +83,17 @@ fun ProgressDial(timeLeft: Float) {
 
 @Composable
 fun TimerCountdown(timeLeft: Long) {
-    // val time = timeLeft.collectAsState().value.toFloat()
-
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            getFormattedStopWatchTime(timeLeft),
+            formattTime(timeLeft),
             style = MaterialTheme.typography.h4
         )
     }
 }
 
-fun getFormattedStopWatchTime(sec: Long): String {
+fun formattTime(sec: Long): String {
     var seconds = sec
     // Convert to hours
     val hours = TimeUnit.SECONDS.toHours(seconds)
@@ -90,8 +104,8 @@ fun getFormattedStopWatchTime(sec: Long): String {
     seconds -= TimeUnit.MINUTES.toSeconds(minutes)
 
     val time = "${if (hours <10) "0" else ""}$hours:" +
-            "${if (minutes < 10) "0" else ""}$minutes:" +
-            "${if (seconds < 10) "0" else ""}$seconds"
+        "${if (minutes < 10) "0" else ""}$minutes:" +
+        "${if (seconds < 10) "0" else ""}$seconds"
 
     return time
 }
